@@ -1,22 +1,19 @@
-<<<<<<< HEAD
 const spacesCltr = {} 
 const Space = require('../models/space-model')
 const Office = require('../models/office-model')
 const Category = require('../models/category-model')
 
-// Create a space
 spacesCltr.create = async (req, res) => {
   try {
-    // const {name} = req
-    // const category = await Category.findOne({ name: name })
-    // if (!category) {
-    //     return res.status(400).json({ error: 'Category not found' })
-    // }
     const officeId = req.params.id
     const office = await Office.findById(officeId)
         if (!office) {
             return res.status(400).json({ error: 'Office not found' })
         }
+    // const category = await Category.findOne({ name: 'meetimg-room' })
+    //   if (!category) {
+    //       return res.status(400).json({ error: 'Category not found' })
+    //   }
     const { body, file } = req
     body.image = file.path 
     body.office = officeId
@@ -28,81 +25,90 @@ spacesCltr.create = async (req, res) => {
         // rating, 
         // image
     // })
-    res.status(201).json(space);
+    res.status(201).json(space)
   } catch (err) {
-    console.error(err);
+    console.error(err)
     res.status(500).json({ error: err.message })
   }
 }
 
-// Get a space by ID
 spacesCltr.getSpaceById = async (req, res) => {
   try {
-    const space = await Space.findById(req.params.spaceId).populate('office');
+    const id = req.params.id
+    const space = await Space.findById(id).populate('office')
     if (!space) {
-      return res.status(404).json({ error: 'Space not found' });
+      return res.status(404).json({ error: 'Space not found' })
     }
-    res.json(space);
+    res.json(space)
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to fetch space' });
+    console.error(err)
+    res.status(500).json({ error: 'Failed to fetch space' })
   }
-};
+}
 
-// Update a space by ID
 spacesCltr.update = async (req, res) => {
   try {
-    const space = await Space.findByIdAndUpdate(req.params.spaceId, req.body, { new: true });
-    if (!space) {
-      return res.status(404).json({ error: 'Space not found' });
-    }
-    res.json(space);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to update space' });
-  }
-};
+    const id = req.params.id
+    const {body, file} = req
 
-// Delete a space by ID
+    body.image = file.path
+    const space = await Space.findByIdAndUpdate(id, body, { new: true })
+    if (!space) {
+      return res.status(404).json({ error: 'Space not found' })
+    }
+    res.json(space)
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Failed to update space' })
+  }
+}
+
 spacesCltr.remove = async (req, res) => {
   try {
-    const space = await Space.findByIdAndDelete(req.params.spaceId);
+    const id = req.params.id
+    const space = await Space.findByIdAndDelete(id)
     if (!space) {
-      return res.status(404).json({ error: 'Space not found' });
+      return res.status(404).json({ error: 'Space not found' })
     }
-    res.json({ message: 'Space deleted successfully' });
+    res.json({ message: 'Space deleted successfully' })
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to delete space' });
+    console.error(err)
+    res.status(500).json({ error: 'Failed to delete space' })
   }
-};
+}
 
 // List spaces for a specific office
 spacesCltr.listSpacesForOffice = async (req, res) => {
     try {
-      const { officeId } = req.params;
-      const spaces = await Space.find({ officeId }).populate('officeId');
-      res.json(spaces);
+      const { officeId } = req.params
+      const spaces = await Space.find({ officeId }).populate('officeId')
+      res.json(spaces)
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Failed to fetch spaces for the office' });
+      console.error(err)
+      res.status(500).json({ error: 'Failed to fetch spaces for the office' })
     }
-  };
+  }
 
   // Search spaces based on criteria
-const searchSpaces = async (req, res) => {
+spacesCltr.searchSpaces = async (req, res) => {
     try {
       // Example: search spaces by availability
-      const { availability } = req.query;
-      const spaces = await Space.find({ isOccupied: availability });
-      res.json(spaces);
+      const spaces = await Space.find({ isAvailable: true })
+      res.json(spaces)
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Failed to search spaces' });
+      console.error(err)
+      res.status(500).json({ error: 'Failed to search spaces' })
     }
-  };
+  }
+
+  spacesCltr.list = async (req, res) => {
+    try {
+      const spaces = await Space.find()
+      res.json(spaces)
+    } catch (err) {
+      console.error(err)
+      res.status(500).json({ error: 'Failed to search spaces' })
+    }
+  }
 
   module.exports = spacesCltr
-=======
-
->>>>>>> cd43d9c05400208517275d676306595995df5a96

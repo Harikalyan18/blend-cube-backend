@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 
 const { Schema, model } = mongoose 
 const spaceSchema = new Schema({
+    name: String,
     office: {
         type: Schema.Types.ObjectId,
         ref: 'Office'

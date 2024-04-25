@@ -43,6 +43,9 @@ const categoryValidationSchema = require('./app/validations/category-validations
 const spacesCltr = require('./app/controllers/spaces-controller')
 const spaceValidationSchema = require('./app/validations/space-validations')
 
+const amenitiesCltr = require('./app/controllers/ametities-controller');
+const amenityValidationSchema = require('./app/validations/amenity-validations');
+
 //categoties
 app.post('/api/categories', authenticateUser, authoriseUser(['admin']), checkSchema(categoryValidationSchema), categoriesCltr.create)
 app.put('/api/categories/:id', authenticateUser, authoriseUser(['admin']), checkSchema(categoryValidationSchema), categoriesCltr.update)
@@ -50,22 +53,33 @@ app.delete('/api/categories/:id', authenticateUser, authoriseUser(['admin']), ca
 app.get('/api/categories', categoriesCltr.list)
 app.get('/api/categories/:id', categoriesCltr.category)
 
+//amenities
+app.post('/api/amenities', authenticateUser, authoriseUser(['admin', 'owner']), checkSchema(amenityValidationSchema), amenitiesCltr.create)
+app.put('/api/amenities/:id', authenticateUser, authoriseUser(['admin', 'owner']), checkSchema(amenityValidationSchema), amenitiesCltr.update)
+app.delete('/api/amenities/:id', authenticateUser, authoriseUser(['admin', 'owner']), amenitiesCltr.remove)
+app.get('/api/amenities', amenitiesCltr.list)
+app.get('/api/amenities/:id', amenitiesCltr.amenity)
+
+//members
 app.post('/api/members', authenticateUser, authoriseUser(['member']), upload.single('image'), checkSchema(memberValidationSchema), membersCltr.create)
 app.put('/api/members/:id', authenticateUser, authoriseUser(['member']), upload.single('image'), checkSchema(memberValidationSchema), membersCltr.update)
 app.delete('/api/members/:id', authenticateUser, authoriseUser(['member', 'admin']), membersCltr.remove)
 app.get('/api/members', authenticateUser, authoriseUser(['admin']), membersCltr.list)
 app.get('/api/members/:id', authenticateUser, authoriseUser(['member', 'admin']), membersCltr.member)
 
+//reviews
 app.post('/api/reviews', authenticateUser, authoriseUser(['member']), checkSchema(reviewValidationSchema), reviewsCltr.create)
 app.put('/api/reviews/:id', authenticateUser, authoriseUser(['member']),checkSchema(reviewValidationSchema), reviewsCltr.update)
 app.delete('/api/reviews/:id',  authenticateUser, authoriseUser(['member']), reviewsCltr.remove)
 
+//users
 app.post('/api/users/register', checkSchema(userRegistrationSchema), usersCltr.register)
 app.post('/api/users/login', checkSchema(userLoginSchema), usersCltr.login)
 app.post('/api/users/create-owner', authenticateUser, authoriseUser(['admin']), usersCltr.createOwner)
 app.get('/api/users/account', authenticateUser, usersCltr.account)
 app.put('/api/users/changeRole/:id', authenticateUser, authoriseUser(['admin']), checkSchema(userRegistrationSchema), usersCltr.updateRole)
 
+//offices
 app.post('/api/offices/create', authenticateUser, authoriseUser(['admin', 'owner']), checkSchema(officeValidationSchema), officesCltr.create)
 app.put('/api/offices/update/:id', authenticateUser, authoriseUser(['admin', 'owner']), checkSchema(officeValidationSchema), officesCltr.update)
 app.get('/api/offices', officesCltr.list)
@@ -74,23 +88,15 @@ app.get('/api/offices/my', authenticateUser, authoriseUser(['admin', 'owner']), 
 app.get('/api/offices/:id', authenticateUser, authoriseUser(['admin', 'owner']), officesCltr.office)
 app.delete('/api/offices/:id', authenticateUser, authoriseUser(['admin', 'owner']), officesCltr.remove)
 
-app.post('/api/spaces/:id', authenticateUser, authoriseUser(['admin', 'owner']), upload.single('image'), checkSchema(spaceValidationSchema),spacesCltr.create)
+//spaces
+app.post('/api/spaces/:id', authenticateUser, authoriseUser(['admin', 'owner']), upload.single('image'), checkSchema(spaceValidationSchema), spacesCltr.create)
+app.put('/api/spaces/:id', authenticateUser, authoriseUser(['owner', 'admin']), upload.single('image'), checkSchema(spaceValidationSchema), spacesCltr.update)
+app.delete('/api/spaces/:id', authenticateUser, authoriseUser(['owner', 'admin']), checkSchema(spaceValidationSchema), spacesCltr.remove)
+app.get('/api/spaces/:id', spacesCltr.listSpacesForOffice)
+app.get('/api/spaces/:id', spacesCltr.getSpaceById)
+app.get('/api/spaces/available', spacesCltr.searchSpaces)
+app.get('/api/spaces', spacesCltr.list)
 
-
-// //Define storage for the uploaded files
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, './uploads/images') // Directory where uploaded files will be stored
-//     },
-//     filename: function (req, file, cb) {
-//         cb(null, file.originalname) // File name format: timestamp-originalname
-//     }
-// });
-// //Initialize Multer instance
-// const upload = multer({ storage: storage });
-
-// // Create a POST endpoint for '/upload' route
-// app.post('/api/uploads', upload.single('image'), membersCltr.create)
 
 app.listen(port, () => {
     console.log('server is running on port '+port)
