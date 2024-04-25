@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const spacesCltr = {} 
 const Space = require('../models/space-model')
 const Office = require('../models/office-model')
@@ -102,3 +103,6 @@ const searchSpaces = async (req, res) => {
   };
 
   module.exports = spacesCltr
+=======
+
+>>>>>>> cd43d9c05400208517275d676306595995df5a96
