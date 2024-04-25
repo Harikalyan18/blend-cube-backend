@@ -10,9 +10,10 @@ reviewsCltr.create = async(req, res) => {
     }
     try {
         const {body} = req
-        if(body.rating <1 || body.rating >5) {
+        if(body.rating < 1 && body.rating > 5) {
             return res.status(500).json({error: 'review must me greatet than 1 and less than 5'})
          }
+        body.memberID = req.user.id
         const review = await Review.create(body)
         res.json(review)   
     }  catch (err) {

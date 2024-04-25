@@ -5,16 +5,14 @@ const reviewSchema = new Schema ({
     memberId: {
         type:Schema.Types.ObjectId,
         ref:'Member',
-       
     },
     officeId: {
         type:Schema.Types.ObjectId,
-        ref: 'Office',
-        
+        ref: 'Office', 
     },
     rating: Number,
     comment: String
-}, { timestamps: true })
+}, { timestamps: true } )
 
 const Review = model('Review', reviewSchema)
 

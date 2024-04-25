@@ -1,11 +1,7 @@
 const Member = require('../models/member-model')
 
 const memberValidationSchema = {
-    image: {
-        notEmpty: {
-            errorMessage: 'image is required'
-        }
-    },
+
         'personalDetails.fullName': {
             notEmpty: {
                 errorMessage:'full name is required'
@@ -27,27 +23,15 @@ const memberValidationSchema = {
                 errorMessage:'purpose is required'
             }
         },
-        'personalDetails.pancard': {
+        'personalDetails.aadharNo': {
             notEmpty: {
-                errorMessage:'pancard number is required'
+                errorMessage:'aadharNo number is required'
             },
-            isLength: {
-                options: { min: 10, max:10 }
-            },
+            // isLength: {
+            //     options: { max:10 }
+            // },
             trim: true
-        },
-        'personalDetails.bankAccount': {
-            notEmpty: {
-                errorMessage:'bank account number is required'
-            },
-            isLength: {
-                options: { min: 11 }
-            },
-            isNumeric: {
-                errorMessage:'Numbers only'
-            },
-            trim: true
-        }   
+        }
  }
 
 module.exports = memberValidationSchema

@@ -2,20 +2,19 @@ const mongoose = require('mongoose')
 
 const { Schema, model } = mongoose
 const memberSchema = new Schema ({
-    // userId: {
-    //     type: Schema.Types.ObjectId,
-    //     ref:'User'
-    // },
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref:'User'
+    },
     image: String,
     personalDetails: {
         fullName: String,
         fullAddress: String,
         occupation: String,
         purpose: String,
-        pancard: String,
-        bankAccount: String,
-        documentNo: String
-    },
+        aadharNo: Number,
+        document: String
+    }, 
     bookingHistory: {
         type:[Schema.Types.ObjectId],
         ref:'Booking'
@@ -24,7 +23,7 @@ const memberSchema = new Schema ({
         type: [Schema.Types.ObjectId],
         ref: 'Space'
     }
-}, { timestamps: true })
+}, { timestamps: true } )
 
 const Member = model('Member', memberSchema)
 

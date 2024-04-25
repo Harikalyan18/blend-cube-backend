@@ -40,3 +40,15 @@ categoriesCltr.list = async(req, res) => {
         res.status(400).json({ error: 'something went wrong'})
     }
 }
+
+categoriesCltr.category = async(req, res) => {
+    try {
+        const id = req.params.id
+        const category = await Category.findById(id)
+        res.json(category)
+    } catch {
+        res.status(400).json({ error: 'something went wrong'})
+    }
+}
+
+module.exports = categoriesCltr
