@@ -3,6 +3,10 @@ const mongoose = require('mongoose')
 const { Schema, model } = mongoose
 const officeSchema = new Schema({
     name: String,
+    image: [{ 
+        type: String
+     }],
+    description: String,
     address: {
         houseNumber: String,
         areaAndStreet: String,

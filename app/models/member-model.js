@@ -6,13 +6,13 @@ const memberSchema = new Schema ({
         type: Schema.Types.ObjectId,
         ref:'User'
     },
+    fullName: String,
     image: String,
     personalDetails: {
-        fullName: String,
         fullAddress: String,
+        aadharNo: Number,
         occupation: String,
         purpose: String,
-        aadharNo: Number,
         document: String
     }, 
     bookingHistory: {

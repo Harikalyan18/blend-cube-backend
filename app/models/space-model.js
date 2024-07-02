@@ -11,17 +11,20 @@ const spaceSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Category'
     },
-    type:[{
-            option: String,
-            price: Number
+    type:[{  
+            day: String,
+            hour: String,
+            price: {
+                type: Number,
+                required: true
+            }
             }],
-    availableQuantity: Number,
+    availableQuantity: Number,                    
     rating: Number,
     isAvailable: {
         type: Boolean,
         default: true
     },
-    // freeAminities:[{type:Schema.Types.ObjectId,ref:'Amenity'}],
     image:String
     
 }, {timestamps: true} )

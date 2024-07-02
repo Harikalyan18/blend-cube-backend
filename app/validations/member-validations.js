@@ -1,13 +1,13 @@
 const Member = require('../models/member-model')
 
 const memberValidationSchema = {
-
-        'personalDetails.fullName': {
-            notEmpty: {
-                errorMessage:'full name is required'
-            },
-            trim: true
+    fullName: {
+        notEmpty: {
+            errorMessage:'full name is required'
         },
+        trim: true
+    },
+
         'personalDetails.fullAddress': {
             notEmpty: {
                 errorMessage:'full address is required'

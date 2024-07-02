@@ -2,32 +2,33 @@ const spacesCltr = {}
 const Space = require('../models/space-model')
 const Office = require('../models/office-model')
 const Category = require('../models/category-model')
+const { validationResult } = require('express-validator')
 
 spacesCltr.create = async (req, res) => {
-  try {
+
+  const errors = validationResult(req)
+    if(!errors.isEmpty()) {
+        return res.status(400).json({errors: errors.array()})
+    }
+    try {
+    const { body, file } = req
     const officeId = req.params.id
     const office = await Office.findById(officeId)
         if (!office) {
             return res.status(400).json({ error: 'Office not found' })
         }
-    // const category = await Category.findOne({ name: 'meetimg-room' })
-    //   if (!category) {
-    //       return res.status(400).json({ error: 'Category not found' })
-    //   }
-    const { body, file } = req
+    const category = await Category.findOne({ _id: body.category })
+      if (!category) {
+          return res.status(400).json({ error: err.message })
+      }
+    
     body.image = file.path 
     body.office = officeId
-    const space = await Space.create(body) //{
-        // office: officeId,
-        // category: category._id
-        // type,
-        // availableQuantity,
-        // rating, 
-        // image
-    // })
+    const space = await Space.create( body )
     res.status(201).json(space)
+
   } catch (err) {
-    console.error(err)
+    console.error('error' , err)
     res.status(500).json({ error: err.message })
   }
 }
@@ -70,7 +71,7 @@ spacesCltr.remove = async (req, res) => {
     if (!space) {
       return res.status(404).json({ error: 'Space not found' })
     }
-    res.json({ message: 'Space deleted successfully' })
+    res.json(space)
   } catch (err) {
     console.error(err)
     res.status(500).json({ error: 'Failed to delete space' })
@@ -80,8 +81,9 @@ spacesCltr.remove = async (req, res) => {
 // List spaces for a specific office
 spacesCltr.listSpacesForOffice = async (req, res) => {
     try {
-      const { officeId } = req.params
-      const spaces = await Space.find({ officeId }).populate('officeId')
+      const { id } = req.params
+      console.log('office', id)
+      const spaces = await Space.find({ office: id }).populate('office')
       res.json(spaces)
     } catch (err) {
       console.error(err)

@@ -2,16 +2,16 @@ const mongoose = require('mongoose')
 
 const { Schema, model } = mongoose
 const reviewSchema = new Schema ({
-    memberId: {
+    member: {
         type:Schema.Types.ObjectId,
         ref:'Member',
     },
-    officeId: {
+    office: {
         type:Schema.Types.ObjectId,
         ref: 'Office', 
     },
     rating: Number,
-    comment: String
+    review: String
 }, { timestamps: true } )
 
 const Review = model('Review', reviewSchema)

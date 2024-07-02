@@ -6,7 +6,25 @@ const officeValidationSchema = {
             errorMessage: 'name is required'
         }
     },
-    address: {
+    'address.locality': {
+        notEmpty: {
+            errorMessage: 'address is required'
+        }
+    },
+    'address.pincode': {
+        notEmpty: {
+            errorMessage: 'address is required'
+        },
+        isNumeric: {
+            errorMessage: 'shound be a number'
+        }
+    },
+    'address.city': {
+        notEmpty: {
+            errorMessage: 'address is required'
+        }
+    },
+    'address.state': {
         notEmpty: {
             errorMessage: 'address is required'
         }

@@ -41,12 +41,6 @@ const userRegistrationSchema = {
 }
 
 const userLoginSchema = {
-    username: {
-        notEmpty: {
-            errorMessage: 'username is required'
-        },
-        trim: true
-    },
     email: {
         notEmpty: {
             errorMessage: 'email is required'

@@ -43,10 +43,10 @@ usersCltr.register = async (req, res) => {
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 console.error('Error sending verification email:', error)
-                res.status(500).json({ error: 'Error sending verification email' })
+                // res.status(500).json({ error: 'Error sending verification email' })
             } else {
                 console.log('Verification email sent:', info.response)
-                res.status(200).json({ message: 'Verification email sent successfully' })
+                // res.status(200).json({ message: 'Verification email sent successfully' })//
             }
         })
         res.json(user)
@@ -104,30 +104,56 @@ usersCltr.register = async (req, res) => {
 //     }
 // }
 
+// usersCltr.login = async (req, res) => {
+//     const errors = validationResult(req)
+//     if(!errors.isEmpty()) {
+//         return res.status(400).json({errors: errors.array()})
+//     }
+//     try{
+//         const { email, password } = req
+//         const user = await User.findOne({ email })
+//         if(!user) {
+//             res.status(401).json({ error: 'user not found'})
+//         }
+//         const isPasswordValid = await bcrypt.compare(password, user.password)
+//         if(!isPasswordValid) {
+//             res.status(400).json({err:'invalid email/password'})
+//         }
+//         const tokenData = {
+//             id:user._id,
+//             role:user.role
+//         }
+//         const token = jwt.sign(tokenData, process.env.JWT_SECRET, {expiresIn: '7d'})
+//         res.json({ token })
+
+//     } catch(err) {
+//         res.status(500).json({error: 'internal server error'})
+//     }
+// }
+
 usersCltr.login = async (req, res) => {
     const errors = validationResult(req)
-    if(!errors.isEmpty()) {
-        return res.status(400).json({errors: errors.array()})
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
     }
-    try{
-        const { body } = req
-        const user = await User.findOne({email: body.email})
-        if(!user) {
-            res.status(401).json({ error: 'user not found'})
+    try {
+        const { email, password } = req.body
+        const user = await User.findOne({ email })
+        if (!user) {
+            return res.status(401).json({ error: 'user not found' })
         }
-        const checkPassword = await bcrypt.compare(body.password, user.password)
-        if(!checkPassword) {
-            res.status(400).json({err:'invalid email/password'})
+        const isPasswordValid = await bcrypt.compare(password, user.password)
+        if (!isPasswordValid) {
+            return res.status(400).json({ error: 'invalid email/password' })
         }
         const tokenData = {
-            id:user._id,
-            role:user.role
+            id: user._id,
+            role: user.role
         }
-        const token = jwt.sign(tokenData, process.env.JWT_SECRET, {expiresIn: '7d'})
-        res.json({token: token})
-
+        const token = jwt.sign(tokenData, process.env.JWT_SECRET, { expiresIn: '7d' })
+        res.json({ token })
     } catch(err) {
-        res.status(500).json({error: 'internal server error'})
+        res.status(500).json({ error: 'internal server error' })
     }
 }
 
@@ -145,8 +171,6 @@ usersCltr.createOwner = async(req, res) => {
         res.status(400).json({err:'Something went wrong'})
     }
 }
-//hdhdh
-//hdhtfdjf
 
 usersCltr.account = async(req, res) => {
     try {

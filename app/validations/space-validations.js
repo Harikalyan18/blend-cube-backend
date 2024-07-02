@@ -1,14 +1,13 @@
 const Space = require('../models/space-model')
 
-const spaceValidationSchema = {
+const spaceValidationSchema = { 
+    
     availableQuantity: {
         notEmpty: {
-            errorMessage: 'availableQuantity is required'
-        }
-    },
-    spaceType: {
-        notEmpty: {
-            errorMessage: 'spaceType is required'
+            errorMessage: 'type is required'
+        },
+        isNumeric: {
+            errorMessage: 'price must be number'
         }
     }
 }
